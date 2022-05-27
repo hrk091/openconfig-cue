@@ -20,12 +20,13 @@ import (
 	output: devices: "\(input.device)": {
 		ocdemo.#Device
 		Interface: "\(_portName)": {
+			ocdemo.#Interface
 			Name:        _portName
 			Description: input.desc
 			Enabled:     input.noShut
 			AdminStatus: 1
 			OperStatus:  1
-			Type:        1
+			Type:        ocdemo.#IETFInterfaces_InterfaceType_ethernetCsmacd
 			Mtu:         input.mtu
 			...
 		}
