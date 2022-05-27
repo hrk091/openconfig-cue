@@ -1,6 +1,7 @@
 package main
 
 import (
+	"list"
 	"strconv"
 
 	ocif "github.com/hrk091/openconfig-cue/services/openconfig:interface"
@@ -24,33 +25,39 @@ services: {
 services: {
 	interfaces: {
 		"oc01": {
-			"1": {
-				noShut: true
-				desc:   "hogehoge"
+			for i, v in list.Repeat([0], 5) {
+				"\(i+1)": {
+					noShut: true
+					desc:   "foo"
+				}
 			}
 		}
 		"oc02": {
-			"2": {
-				noShut: false
-				mtu:    9216
+			for i, v in list.Repeat([0], 5) {
+				"\(i+1)": {
+					noShut: false
+					mtu:    9216
+				}
 			}
 		}
 	}
 	vlans: {
 		"oc01": {
-			"1": {
-				"1001": _
-				"1002": _
-				"1003": _
-				"1004": _
+			for i, v in list.Repeat([0], 2) {
+				"\(i+1)": {
+					for j, v in list.Repeat([0], 3) {
+						"\(j+1000)": _
+					}
+				}
 			}
 		}
 		"oc02": {
-			"2": {
-				"1001": _
-				"1002": _
-				"1003": _
-				"1004": _
+			for i, v in list.Repeat([0], 3) {
+				"\(i+1)": {
+					for j, v in list.Repeat([0], 2) {
+						"\(j+1000)": _
+					}
+				}
 			}
 		}
 	}
