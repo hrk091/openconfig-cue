@@ -30,6 +30,7 @@ package ocdemo
 // Device represents the /device YANG schema element.
 #Device: {
 	Interface: {[string]: null | #Interface} @go(,map[string]*Interface)
+	Vlan: {[string]: null | #Vlan} @go(,map[uint16]*Vlan)
 }
 
 // Interface represents the /openconfig-interfaces/interfaces/interface YANG schema element.
@@ -46,6 +47,7 @@ package ocdemo
 	Mtu?:         null | uint16                 @go(,*uint16)
 	Name?:        null | string                 @go(,*string)
 	OperStatus:   #E_Interface_OperStatus
+	Subinterface: {[string]: null | #Interface_Subinterface} @go(,map[uint32]*Interface_Subinterface)
 	RoutedVlan?:  null | #Interface_RoutedVlan @go(,*Interface_RoutedVlan)
 	Type:         #E_IETFInterfaces_InterfaceType
 }

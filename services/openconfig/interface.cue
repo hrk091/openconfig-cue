@@ -20,7 +20,6 @@ import (
 	output: devices: "\(input.device)": {
 		ocdemo.#Device
 		Interface: "\(_portName)": {
-			ocdemo.#Interface
 			Name:        _portName
 			Description: input.desc
 			Enabled:     input.noShut

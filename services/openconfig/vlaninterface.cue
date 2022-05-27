@@ -18,13 +18,11 @@ import (
 	output: devices: "\(input.device)": {
 		ocdemo.#Device
 		Interface: "\(_portName)": Subinterface: "\(input.vlanID)": {
-			ocdemo.#Interface_Subinterface
 			Ifindex:     input.port
 			Index:       input.vlanID
 			Name:        "\(_portName).\(input.vlanID)"
 			AdminStatus: 1
 			OperStatus:  1
-			Type: ocdemo.#IETFInterfaces_InterfaceType_l2vlan
 			...
 		}
 
@@ -34,12 +32,11 @@ import (
 		}
 
 		Vlan: "\(input.vlanID)": {
-			ocdemo.#Vlan
 			VlanId: input.vlanID
 			Name:   "VLAN\(input.vlanID)"
 			Status: ocdemo.#Vlan_Status_ACTIVE
 			Tpid:   ocdemo.#OpenconfigVlanTypes_TPID_TYPES_UNSET
-			Member: [for _, v in _member["\(input.vlanID)"] {v}]
+			Member: [ for _, v in _member["\(input.vlanID)"] {v}]
 			...
 		}
 		...
