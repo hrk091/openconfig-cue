@@ -1,58 +1,77 @@
 package main
 
 import (
+	"strconv"
+
 	"github.com/hrk091/openconfig-cue/templates/openconfig:interface"
 	"github.com/hrk091/openconfig-cue/templates/openconfig:vlaninterface"
+//	ocdemo "github.com/hrk091/openconfig-go-structure/pkg/ocdemo"
 )
 
-(interface.template & {
-	port:   1
-	noShut: true
-	desc:   "hogehoge"
-}).output
+// Input Syntax
+services: {
+	interfaces: [device=string]: [port=string]: interface.#Input & {
+		"device": device
+		"port":   strconv.Atoi(port)
+	}
+	vlans: [device=string]: [port=string]: [vlanID=string]: vlaninterface.#Input & {
+		"device": device
+		"port":   strconv.Atoi(port)
+		"vlanID": strconv.Atoi(vlanID)
+	}
+}
 
-(interface.template & {
-	port:   2
-	noShut: false
-	mtu:    9216
-}).output
+// Input
+services: {
+	interfaces: {
+		"oc01": {
+			"1": {
+				noShut: true
+				desc:   "hogehoge"
+			}
+		}
+		"oc02": {
+			"2": {
+				noShut: false
+				mtu:    9216
+			}
+		}
+	}
+	vlans: {
+		"oc01": {
+			"1": {
+				"1001": _
+				"1002": _
+				"1003": _
+				"1004": _
+			}
+		}
+		"oc02": {
+			"2": {
+				"1001": _
+				"1002": _
+				"1003": _
+				"1004": _
+			}
+		}
+	}
+}
 
-(vlaninterface.template & {
-	port:   1
-	vlanID: 1000
-}).output
+// TODO implement in core
+for _, v in services.interfaces {
+	for _, i in v {
+		(interface.#Template & {
+			input: i
+		}).output
+	}
+}
 
-(vlaninterface.template & {
-	port:   1
-	vlanID: 1001
-}).output
-
-(vlaninterface.template & {
-	port:   1
-	vlanID: 1002
-}).output
-
-(vlaninterface.template & {
-	port:   1
-	vlanID: 1003
-}).output
-
-(vlaninterface.template & {
-	port:   2
-	vlanID: 1002
-}).output
-
-(vlaninterface.template & {
-	port:   2
-	vlanID: 1003
-}).output
-
-(vlaninterface.template & {
-	port:   2
-	vlanID: 1004
-}).output
-
-(vlaninterface.template & {
-	port:   2
-	vlanID: 1005
-}).output
+for _, v in services.vlans {
+	for _, vv in v {
+		for _, i in vv {
+			(vlaninterface.#Template & {
+				input: i
+			}).output
+		}
+	}
+}

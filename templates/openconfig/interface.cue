@@ -4,23 +4,31 @@ import (
 	ocdemo "github.com/hrk091/openconfig-go-structure/pkg/ocdemo"
 )
 
-template: {
+#Input: {
+	device: string
 	port:   uint16
 	noShut: bool
 	desc:   string | *""
 	mtu:    uint16 | *9000
+}
 
-	let _portName = "Ethernet\(port)"
+#Template: {
+	input: #Input
 
-	output: ocdemo.#Device & {
-		Interface: "\(_portName)": ocdemo.#Interface & {
+	let _portName = "Ethernet\(input.port)"
+
+	output: devices: "\(input.device)": {
+		ocdemo.#Device
+		Interface: "\(_portName)": {
 			Name:        _portName
-			Description: desc
-			Enabled:     noShut
+			Description: input.desc
+			Enabled:     input.noShut
 			AdminStatus: 1
 			OperStatus:  1
 			Type:        1
-			Mtu:         mtu
+			Mtu:         input.mtu
+			...
 		}
+		...
 	}
 }
