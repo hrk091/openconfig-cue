@@ -3,18 +3,17 @@ package main
 import (
 	"strconv"
 
-	"github.com/hrk091/openconfig-cue/templates/openconfig:interface"
-	"github.com/hrk091/openconfig-cue/templates/openconfig:vlaninterface"
-//	ocdemo "github.com/hrk091/openconfig-go-structure/pkg/ocdemo"
+	ocif "github.com/hrk091/openconfig-cue/services/openconfig:interface"
+	ocvif "github.com/hrk091/openconfig-cue/services/openconfig:vlaninterface"
 )
 
 // Input Syntax
 services: {
-	interfaces: [device=string]: [port=string]: interface.#Input & {
+	interfaces: [device=_]: [port=_]: ocif.#Input & {
 		"device": device
 		"port":   strconv.Atoi(port)
 	}
-	vlans: [device=string]: [port=string]: [vlanID=string]: vlaninterface.#Input & {
+	vlans: [device=_]: [port=_]: [vlanID=_]: ocvif.#Input & {
 		"device": device
 		"port":   strconv.Atoi(port)
 		"vlanID": strconv.Atoi(vlanID)
@@ -60,7 +59,7 @@ services: {
 // TODO implement in core
 for _, v in services.interfaces {
 	for _, i in v {
-		(interface.#Template & {
+		(ocif.#Template & {
 			input: i
 		}).output
 	}
@@ -69,7 +68,7 @@ for _, v in services.interfaces {
 for _, v in services.vlans {
 	for _, vv in v {
 		for _, i in vv {
-			(vlaninterface.#Template & {
+			(ocvif.#Template & {
 				input: i
 			}).output
 		}
