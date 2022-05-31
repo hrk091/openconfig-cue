@@ -17,7 +17,7 @@ import (
 
 	let _portName = "Ethernet\(input.port)"
 
-	output: devices: "\(input.device)": {
+	output: devices: "\(input.device)": config: {
 		ocdemo.#Device
 		Interface: "\(_portName)": {
 			Name:        _portName
