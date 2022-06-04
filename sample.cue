@@ -10,11 +10,11 @@ import (
 
 // Input Syntax
 services: {
-	interfaces: [device=_]: [port=_]: ocif.#Input & {
+	ocInterfaces: [device=_]: [port=_]: ocif.#Input & {
 		"device": device
 		"port":   strconv.Atoi(port)
 	}
-	vlans: [device=_]: [port=_]: [vlanID=_]: ocvif.#Input & {
+	ocVlans: [device=_]: [port=_]: [vlanID=_]: ocvif.#Input & {
 		"device": device
 		"port":   strconv.Atoi(port)
 		"vlanID": strconv.Atoi(vlanID)
@@ -23,7 +23,7 @@ services: {
 
 // Input
 services: {
-	interfaces: {
+	ocInterfaces: {
 		"oc01": {
 			for i, v in list.Repeat([0], 5) {
 				"\(i+1)": {
@@ -41,7 +41,7 @@ services: {
 			}
 		}
 	}
-	vlans: {
+	ocVlans: {
 		"oc01": {
 			for i, v in list.Repeat([0], 2) {
 				"\(i+1)": {
@@ -64,7 +64,7 @@ services: {
 }
 
 // TODO implement in core
-for _, v in services.interfaces {
+for _, v in services.ocInterfaces {
 	for _, i in v {
 		(ocif.#Template & {
 			input: i
@@ -72,7 +72,7 @@ for _, v in services.interfaces {
 	}
 }
 
-for _, v in services.vlans {
+for _, v in services.ocVlans {
 	for _, vv in v {
 		for _, i in vv {
 			(ocvif.#Template & {
